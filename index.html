@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dulce Fortuna - Loteria de Concepcion 2026</title>
+  <meta name="description" content="Dulce Fortuna - Donde nacen tus suenos. Juego de loteria digital de Loteria de Concepcion. Gira, colecciona dulces y gana hasta $2,000,000 en acumulados.">
+  <link rel="preload" href="assets/Bangers-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Bangers';
+      src: url('assets/Bangers-Regular.ttf') format('truetype');
+      font-display: swap;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --pink: #ff6b9d;
+      --orange: #ff8c42;
+      --purple: #7b2d8e;
+      --deep-purple: #040218;
+      --gold: #d4a017;
+      --gold-light: #f0d060;
+      --candy-pink: #e91e8c;
+      --candy-blue: #00bcd4;
+      --jackpot-mini: #00c853;
+      --jackpot-menor: #2979ff;
+      --jackpot-mayor: #ff6d00;
+      --jackpot-mega: #d50000;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Bangers', 'Segoe UI', system-ui, sans-serif;
+      background: var(--deep-purple);
+      color: #fff;
+      overflow-x: hidden;
+      line-height: 1.4;
+    }
+
+    .text-body {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-weight: 300;
+    }
+
+    /* ===== GLOBAL BACKGROUND ===== */
+    .bg-stars {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 80% 80%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 10% 90%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(2px 2px at 70% 50%, rgba(255,255,255,0.15), transparent),
+        radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.25), transparent);
+      background-color: var(--deep-purple);
+      animation: twinkle 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle { 0% { opacity: 0.7; } 100% { opacity: 1; } }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(180deg, rgba(4,2,24,0.95) 0%, rgba(4,2,24,0) 100%);
+      transition: background 0.3s;
+    }
+    nav.scrolled { background: rgba(4,2,24,0.97); backdrop-filter: blur(12px); }
+
+    .nav-logo { height: 50px; filter: drop-shadow(0 2px 8px rgba(255,107,157,0.4)); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 1.15rem; letter-spacing: 1px;
+      transition: color 0.3s; text-shadow: 0 0 10px rgba(255,107,157,0.3);
+    }
+    .nav-links a:hover { color: var(--gold-light); text-shadow: 0 0 20px rgba(240,208,96,0.5); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--orange), var(--candy-pink));
+      padding: 0.6rem 1.5rem; border-radius: 50px;
+      font-family: 'Bangers', sans-serif; font-size: 1.1rem; letter-spacing: 1px;
+      border: 2px solid var(--gold-light); cursor: pointer; color: #fff; text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 20px rgba(255,140,66,0.4);
+    }
+    .nav-cta:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(255,140,66,0.6); }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; overflow: hidden;
+    }
+    .hero-bg { position: absolute; inset: 0; z-index: -1; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; filter: blur(2px) saturate(1.3); }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(4,2,24,0.3) 0%, rgba(4,2,24,0.1) 40%, rgba(4,2,24,0.6) 80%, rgba(4,2,24,1) 100%);
+    }
+
+    .hero-title {
+      max-width: 600px; width: 90%;
+      animation: floatIn 1s ease-out;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.2rem, 3vw, 1.8rem); margin-top: 1.5rem;
+      background: linear-gradient(90deg, var(--gold-light), #fff, var(--gold-light));
+      background-size: 200% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: shimmer 3s linear infinite; letter-spacing: 3px;
+    }
+
+    .hero-badge {
+      margin-top: 1rem; display: inline-block;
+      font-family: system-ui, sans-serif; font-size: 0.9rem; font-weight: 400;
+      color: rgba(255,255,255,0.6); letter-spacing: 2px;
+    }
+
+    @keyframes shimmer { to { background-position: 200% center; } }
+
+    .hero-mascot {
+      position: absolute; bottom: 5%; right: 5%;
+      width: clamp(120px, 18vw, 260px);
+      animation: float 4s ease-in-out infinite;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5)); z-index: 2;
+    }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+    @keyframes floatIn { from { opacity: 0; transform: translateY(40px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    .hero-cta {
+      margin-top: 2.5rem; display: inline-block; padding: 1rem 3rem;
+      font-family: 'Bangers', sans-serif; font-size: 1.6rem; letter-spacing: 3px; color: #fff;
+      background: linear-gradient(135deg, var(--candy-pink), var(--orange));
+      border: 3px solid var(--gold-light); border-radius: 60px; text-decoration: none; cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 8px 40px rgba(233,30,140,0.4), inset 0 -4px 10px rgba(0,0,0,0.2);
+      animation: floatIn 1s ease-out 0.3s both; z-index: 2;
+    }
+    .hero-cta::before {
+      content: ''; position: absolute; top: -2px; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+    .hero-cta:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 12px 50px rgba(233,30,140,0.6), inset 0 -4px 10px rgba(0,0,0,0.2); }
+    .hero-cta:hover::before { left: 100%; }
+
+    .scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; opacity: 0.6; }
+    .scroll-indicator span { display: block; width: 24px; height: 24px; border-right: 3px solid var(--gold-light); border-bottom: 3px solid var(--gold-light); transform: rotate(45deg); }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-15px); } 60% { transform: translateX(-50%) translateY(-7px); } }
+
+    /* ===== SECTION BASE ===== */
+    section { padding: 5rem 2rem; position: relative; }
+    .section-title {
+      text-align: center; font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 1rem; letter-spacing: 3px;
+      text-shadow: 0 0 20px rgba(255,107,157,0.5), 0 4px 8px rgba(0,0,0,0.5);
+    }
+    .section-subtitle {
+      text-align: center; font-size: 1.05rem; color: rgba(255,255,255,0.7);
+      max-width: 600px; margin: 0 auto 3.5rem;
+      font-family: system-ui, sans-serif; font-weight: 300; line-height: 1.6;
+    }
+    .section-divider {
+      width: 100px; height: 4px;
+      background: linear-gradient(90deg, var(--candy-pink), var(--orange), var(--gold-light));
+      border-radius: 2px; margin: 0 auto 2rem;
+    }
+
+    /* ===== JACKPOT BAR ===== */
+    .jackpot-bar {
+      background: linear-gradient(180deg, rgba(4,2,24,0.9) 0%, rgba(123,45,142,0.15) 50%, rgba(4,2,24,0.9) 100%);
+      padding: 2.5rem 2rem;
+      border-top: 1px solid rgba(240,208,96,0.15);
+      border-bottom: 1px solid rgba(240,208,96,0.15);
+    }
+    .jackpot-bar h2 {
+      text-align: center; font-size: 1.6rem; letter-spacing: 3px; margin-bottom: 0.5rem;
+      text-shadow: 0 0 15px rgba(240,208,96,0.5);
+    }
+    .jackpot-bar .jackpot-note {
+      text-align: center; font-family: system-ui, sans-serif; font-weight: 300;
+      font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 1.5rem;
+    }
+    .jackpots-row {
+      display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+      max-width: 900px; margin: 0 auto;
+    }
+    .jackpot-item {
+      flex: 1; min-width: 160px; max-width: 210px;
+      border-radius: 16px; padding: 1.2rem 1rem; text-align: center;
+      position: relative; overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .jackpot-item:hover { transform: translateY(-4px); }
+    .jackpot-item.mini {
+      background: linear-gradient(145deg, rgba(0,200,83,0.15), rgba(0,200,83,0.05));
+      border: 1px solid rgba(0,200,83,0.3);
+    }
+    .jackpot-item.menor {
+      background: linear-gradient(145deg, rgba(41,121,255,0.15), rgba(41,121,255,0.05));
+      border: 1px solid rgba(41,121,255,0.3);
+    }
+    .jackpot-item.mayor {
+      background: linear-gradient(145deg, rgba(255,109,0,0.15), rgba(255,109,0,0.05));
+      border: 1px solid rgba(255,109,0,0.3);
+    }
+    .jackpot-item.mega {
+      background: linear-gradient(145deg, rgba(213,0,0,0.2), rgba(213,0,0,0.05));
+      border: 1px solid rgba(213,0,0,0.4);
+      box-shadow: 0 0 30px rgba(213,0,0,0.15);
+    }
+    .jackpot-item.mega:hover { box-shadow: 0 8px 40px rgba(213,0,0,0.3); }
+    .jackpot-label {
+      font-size: 1rem; letter-spacing: 2px; margin-bottom: 0.3rem; opacity: 0.9;
+    }
+    .jackpot-item.mini .jackpot-label { color: var(--jackpot-mini); }
+    .jackpot-item.menor .jackpot-label { color: var(--jackpot-menor); }
+    .jackpot-item.mayor .jackpot-label { color: var(--jackpot-mayor); }
+    .jackpot-item.mega .jackpot-label { color: var(--jackpot-mega); }
+    .jackpot-value {
+      font-size: 1.6rem; letter-spacing: 1px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .jackpot-item.mega .jackpot-value { font-size: 1.8rem; color: var(--gold-light); }
+
+    /* ===== FEATURES ===== */
+    .features { background: linear-gradient(180deg, transparent 0%, rgba(123,45,142,0.1) 50%, transparent 100%); }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem; max-width: 1100px; margin: 0 auto;
+    }
+    .feature-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 24px;
+      padding: 2.5rem 2rem; text-align: center;
+      transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--candy-pink), var(--orange), var(--gold-light));
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(233,30,140,0.15); border-color: rgba(255,107,157,0.3); }
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 100px; height: 100px; object-fit: contain; margin-bottom: 1.5rem;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4)); transition: transform 0.4s;
+    }
+    .feature-card:hover .feature-icon { transform: scale(1.1) rotate(-3deg); }
+    .feature-card h3 {
+      font-size: 1.5rem; letter-spacing: 2px; margin-bottom: 0.75rem;
+      background: linear-gradient(90deg, var(--pink), var(--orange));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .feature-card p { font-family: system-ui, sans-serif; font-weight: 300; color: rgba(255,255,255,0.65); font-size: 0.95rem; line-height: 1.6; }
+
+    /* ===== SYMBOLS MARQUEE ===== */
+    .symbols { overflow: hidden; padding: 2rem 0; }
+    .symbols-track {
+      display: flex; gap: 2rem;
+      animation: scroll-symbols 25s linear infinite; width: max-content;
+    }
+    .symbols-track img {
+      width: 90px; height: 90px; object-fit: contain;
+      filter: drop-shadow(0 6px 15px rgba(0,0,0,0.5)); border-radius: 16px; transition: transform 0.3s;
+    }
+    .symbols-track img:hover { transform: scale(1.2) rotate(5deg); }
+    @keyframes scroll-symbols { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* ===== FREE SPINS ===== */
+    .free-spins { background: linear-gradient(180deg, transparent 0%, rgba(233,30,140,0.06) 50%, transparent 100%); }
+    .free-spins-content {
+      display: flex; align-items: center; justify-content: center;
+      gap: 4rem; max-width: 1100px; margin: 0 auto; flex-wrap: wrap;
+    }
+    .free-spins-visual {
+      position: relative; flex-shrink: 0;
+    }
+    .free-spins-visual img {
+      width: 280px;
+      filter: drop-shadow(0 15px 40px rgba(233,30,140,0.3));
+      animation: float 3.5s ease-in-out infinite;
+    }
+    .fs-badge {
+      position: absolute; top: -10px; right: -10px;
+      background: linear-gradient(135deg, var(--candy-pink), var(--orange));
+      border: 2px solid var(--gold-light); border-radius: 50%;
+      width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; box-shadow: 0 4px 15px rgba(233,30,140,0.4);
+    }
+    .free-spins-info { max-width: 450px; }
+    .free-spins-info h2 {
+      font-size: 2.5rem; letter-spacing: 3px; margin-bottom: 1rem;
+      text-shadow: 0 0 20px rgba(255,107,157,0.4);
+    }
+    .free-spins-info p {
+      font-family: system-ui, sans-serif; font-weight: 300;
+      color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.7; margin-bottom: 1rem;
+    }
+    .fs-features {
+      list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1rem;
+    }
+    .fs-features li {
+      font-family: system-ui, sans-serif; font-weight: 300;
+      color: rgba(255,255,255,0.6); font-size: 0.9rem;
+      padding-left: 1.5rem; position: relative;
+    }
+    .fs-features li::before {
+      content: ''; position: absolute; left: 0; top: 7px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--candy-pink), var(--orange));
+    }
+
+    /* ===== BONUS / RULETA ===== */
+    .bonus { position: relative; }
+    .bonus-content {
+      display: flex; align-items: center; justify-content: center;
+      gap: 4rem; max-width: 1100px; margin: 0 auto; flex-wrap: wrap;
+    }
+    .ruleta-container { position: relative; width: 320px; height: 320px; flex-shrink: 0; }
+    .ruleta-bg { position: absolute; inset: 10px; border-radius: 50%; animation: spin-slow 20s linear infinite; }
+    .ruleta-bg img { width: 100%; height: 100%; object-fit: contain; }
+    .ruleta-frame { position: absolute; inset: 0; }
+    .ruleta-frame img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 30px rgba(212,160,23,0.4)); }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+    .bonus-text { max-width: 420px; }
+    .bonus-text h2 { font-size: 2.5rem; letter-spacing: 3px; margin-bottom: 1rem; text-shadow: 0 0 20px rgba(255,107,157,0.4); }
+    .bonus-text p { font-family: system-ui, sans-serif; font-weight: 300; color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.7; margin-bottom: 1rem; }
+    .bonus-badge { width: 180px; filter: drop-shadow(0 8px 25px rgba(0,0,0,0.5)); animation: float 3s ease-in-out infinite; }
+
+    .bonus-highlight {
+      display: inline-block; padding: 0.3rem 0.8rem; border-radius: 8px;
+      background: rgba(240,208,96,0.1); border: 1px solid rgba(240,208,96,0.2);
+      font-family: system-ui, sans-serif; font-size: 0.85rem; font-weight: 400;
+      color: var(--gold-light); margin-top: 0.5rem;
+    }
+
+    /* ===== PAYTABLE ===== */
+    .paytable { background: linear-gradient(180deg, transparent 0%, rgba(123,45,142,0.08) 50%, transparent 100%); }
+    .paytable-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem; max-width: 1000px; margin: 0 auto;
+    }
+    .pay-tier {
+      background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 20px;
+      padding: 2rem; transition: transform 0.3s;
+    }
+    .pay-tier:hover { transform: translateY(-4px); }
+    .pay-tier h3 {
+      font-size: 1.3rem; letter-spacing: 2px; margin-bottom: 0.5rem; text-align: center;
+    }
+    .pay-tier.tier-common h3 { color: var(--candy-blue); }
+    .pay-tier.tier-medium h3 { color: var(--orange); }
+    .pay-tier.tier-premium h3 { color: var(--gold-light); }
+
+    .pay-tier .tier-desc {
+      text-align: center; font-family: system-ui, sans-serif; font-weight: 300;
+      font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 1rem;
+    }
+    .tier-symbols {
+      display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.2rem;
+    }
+    .tier-symbols img { width: 40px; height: 40px; object-fit: contain; border-radius: 8px; }
+
+    .pay-table {
+      width: 100%; border-collapse: collapse;
+      font-family: system-ui, sans-serif; font-size: 0.85rem;
+    }
+    .pay-table th {
+      text-align: center; padding: 0.4rem; font-weight: 600;
+      color: rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem; letter-spacing: 1px;
+    }
+    .pay-table td {
+      text-align: center; padding: 0.4rem;
+      color: rgba(255,255,255,0.6); border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .pay-table td:last-child { color: var(--gold-light); font-weight: 600; }
+    .pay-tier.tier-premium .pay-table td:last-child { color: #ff5252; }
+
+    .pay-note {
+      text-align: center; font-family: system-ui, sans-serif; font-weight: 300;
+      font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-top: 2rem;
+    }
+
+    /* ===== HOW TO PLAY ===== */
+    .how-to-play { background: linear-gradient(180deg, transparent 0%, rgba(123,45,142,0.08) 50%, transparent 100%); }
+    .steps {
+      display: flex; justify-content: center; gap: 2rem;
+      max-width: 900px; margin: 0 auto; flex-wrap: wrap;
+    }
+    .step { flex: 1; min-width: 200px; max-width: 260px; text-align: center; position: relative; }
+    .step-number {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--candy-pink), var(--orange));
+      display: flex; align-items: center; justify-content: center; font-size: 2rem;
+      margin: 0 auto 1.2rem;
+      border: 3px solid var(--gold-light); box-shadow: 0 6px 25px rgba(233,30,140,0.3);
+    }
+    .step h3 { font-size: 1.3rem; letter-spacing: 2px; margin-bottom: 0.5rem; }
+    .step p { font-family: system-ui, sans-serif; font-weight: 300; color: rgba(255,255,255,0.6); font-size: 0.9rem; line-height: 1.5; }
+    .step-connector { display: none; }
+    @media (min-width: 768px) {
+      .step-connector {
+        display: block; position: absolute; top: 35px; right: -1.5rem;
+        width: 2rem; height: 2px; background: linear-gradient(90deg, var(--gold-light), transparent);
+      }
+      .step:last-child .step-connector { display: none; }
+    }
+
+    .bet-levels {
+      display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap;
+      max-width: 600px; margin: 2.5rem auto 0;
+    }
+    .bet-chip {
+      padding: 0.4rem 1rem; border-radius: 50px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      font-family: system-ui, sans-serif; font-size: 0.85rem; font-weight: 500;
+      color: rgba(255,255,255,0.5); transition: all 0.3s;
+    }
+    .bet-chip:hover { border-color: var(--gold-light); color: var(--gold-light); background: rgba(240,208,96,0.08); }
+
+    /* ===== WIN TIERS ===== */
+    .win-tiers-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem; max-width: 900px; margin: 0 auto;
+    }
+    .win-tier-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;
+      padding: 1.5rem; text-align: center; transition: transform 0.3s;
+    }
+    .win-tier-card:hover { transform: translateY(-4px); }
+    .win-tier-card .tier-name { font-size: 1.3rem; letter-spacing: 2px; margin-bottom: 0.4rem; }
+    .win-tier-card .tier-range { font-family: system-ui, sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem; }
+    .win-tier-card .tier-detail { font-family: system-ui, sans-serif; font-weight: 300; font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.4; }
+
+    .win-tier-card.small-tier { border-color: rgba(255,255,255,0.1); }
+    .win-tier-card.small-tier .tier-name { color: rgba(255,255,255,0.5); }
+    .win-tier-card.grande-tier { border-color: rgba(0,188,212,0.2); }
+    .win-tier-card.grande-tier .tier-name { color: var(--candy-blue); }
+    .win-tier-card.gigante-tier { border-color: rgba(255,140,66,0.2); }
+    .win-tier-card.gigante-tier .tier-name { color: var(--orange); }
+    .win-tier-card.sensacional-tier {
+      border-color: rgba(233,30,140,0.3);
+      box-shadow: 0 0 20px rgba(233,30,140,0.1);
+    }
+    .win-tier-card.sensacional-tier .tier-name {
+      background: linear-gradient(90deg, var(--candy-pink), var(--gold-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ===== TRUST / TRANSPARENCY ===== */
+    .trust { background: linear-gradient(180deg, transparent 0%, rgba(0,188,212,0.05) 50%, transparent 100%); }
+    .trust-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem; max-width: 950px; margin: 0 auto;
+    }
+    .trust-item {
+      text-align: center; padding: 1.5rem;
+      background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;
+    }
+    .trust-icon { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
+    .trust-item h4 { font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 0.4rem; color: var(--candy-blue); }
+    .trust-item p { font-family: system-ui, sans-serif; font-weight: 300; font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section { text-align: center; padding: 6rem 2rem; position: relative; }
+    .cta-mascot {
+      width: clamp(200px, 30vw, 350px); margin-bottom: 2rem;
+      filter: drop-shadow(0 20px 50px rgba(0,0,0,0.6));
+      animation: float 4s ease-in-out infinite;
+    }
+    .cta-section h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: 3px; margin-bottom: 1rem;
+      text-shadow: 0 0 30px rgba(255,107,157,0.5);
+    }
+    .cta-section p {
+      font-family: system-ui, sans-serif; font-weight: 300;
+      color: rgba(255,255,255,0.7); font-size: 1.1rem; margin-bottom: 2rem;
+      max-width: 500px; margin-left: auto; margin-right: auto;
+    }
+    .cta-btn {
+      display: inline-block; padding: 1.2rem 4rem;
+      font-family: 'Bangers', sans-serif; font-size: 1.8rem; letter-spacing: 4px; color: #fff;
+      background: linear-gradient(135deg, #d4a017, #f0d060, #d4a017); background-size: 200% auto;
+      border: 3px solid #fff; border-radius: 60px; text-decoration: none; cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 8px 40px rgba(212,160,23,0.5);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      animation: shimmer 3s linear infinite;
+    }
+    .cta-btn:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 12px 50px rgba(212,160,23,0.7); }
+
+    /* ===== RESPONSIBLE GAMING ===== */
+    .responsible-gaming {
+      text-align: center; padding: 3rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .rg-badge {
+      display: inline-flex; align-items: center; gap: 0.8rem;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      padding: 1rem 2rem; border-radius: 16px;
+      margin-bottom: 1rem;
+    }
+    .rg-badge strong {
+      background: linear-gradient(135deg, var(--orange), var(--candy-pink));
+      padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 1rem;
+    }
+    .rg-badge span {
+      font-family: system-ui, sans-serif; font-weight: 400; font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .rg-text {
+      font-family: system-ui, sans-serif; font-weight: 300;
+      font-size: 0.85rem; color: rgba(255,255,255,0.35); max-width: 500px; margin: 0.5rem auto;
+      line-height: 1.5;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 3rem 2rem; text-align: center;
+    }
+    .footer-logo { height: 60px; margin-bottom: 1rem; filter: drop-shadow(0 4px 12px rgba(255,107,157,0.3)); }
+    .footer-tagline {
+      font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 1.5rem;
+      color: rgba(255,255,255,0.4);
+    }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; list-style: none; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-family: system-ui, sans-serif; font-size: 0.9rem; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--gold-light); }
+    .footer-institution {
+      font-family: system-ui, sans-serif; font-weight: 400;
+      font-size: 0.85rem; color: rgba(255,255,255,0.35); margin-bottom: 0.5rem;
+    }
+    .footer-coins { width: 180px; margin-top: 1rem; opacity: 0.5; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); }
+    .footer-copy { color: rgba(255,255,255,0.25); font-family: system-ui, sans-serif; font-size: 0.75rem; margin-top: 1rem; }
+
+    /* ===== FLOATING CANDIES ===== */
+    .floating-candy { position: fixed; pointer-events: none; z-index: -1; opacity: 0.08; animation: drift 15s linear infinite; }
+    .floating-candy:nth-child(1) { left: 5%; animation-duration: 18s; animation-delay: 0s; top: -80px; width: 60px; }
+    .floating-candy:nth-child(2) { left: 25%; animation-duration: 22s; animation-delay: -4s; top: -80px; width: 50px; }
+    .floating-candy:nth-child(3) { left: 50%; animation-duration: 16s; animation-delay: -8s; top: -80px; width: 70px; }
+    .floating-candy:nth-child(4) { left: 75%; animation-duration: 20s; animation-delay: -12s; top: -80px; width: 55px; }
+    .floating-candy:nth-child(5) { left: 90%; animation-duration: 24s; animation-delay: -6s; top: -80px; width: 65px; }
+    @keyframes drift { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.08; } 90% { opacity: 0.08; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      nav { padding: 0.8rem 1rem; }
+      .nav-links { display: none; }
+      .hero-mascot { position: relative; bottom: auto; right: auto; margin-top: 2rem; width: 150px; }
+      .bonus-content, .free-spins-content { flex-direction: column; text-align: center; gap: 2rem; }
+      .ruleta-container { width: 250px; height: 250px; }
+      .features-grid { grid-template-columns: 1fr; max-width: 400px; }
+      .paytable-grid { grid-template-columns: 1fr; }
+      .steps { flex-direction: column; align-items: center; }
+      .step-connector { display: none !important; }
+      .jackpots-row { gap: 0.6rem; }
+      .jackpot-item { min-width: 140px; padding: 0.8rem; }
+      .jackpot-value { font-size: 1.3rem; }
+      .win-tiers-grid { grid-template-columns: repeat(2, 1fr); }
+      .trust-grid { grid-template-columns: 1fr; max-width: 350px; }
+      .hero-bg img.desktop-bg { display: none; }
+      .hero-bg img.mobile-bg { display: block !important; }
+    }
+    @media (min-width: 769px) {
+      .hero-bg img.mobile-bg { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating decorative candies -->
+  <img class="floating-candy" src="assets/images/symbols/candy_C1.webp" alt="">
+  <img class="floating-candy" src="assets/images/symbols/candy_C3.webp" alt="">
+  <img class="floating-candy" src="assets/images/symbols/candy_M1.webp" alt="">
+  <img class="floating-candy" src="assets/images/symbols/candy_C4.webp" alt="">
+  <img class="floating-candy" src="assets/images/symbols/candy_M3.webp" alt="">
+
+  <div class="bg-stars"></div>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <img src="assets/images/title.png" alt="Dulce Fortuna" class="nav-logo">
+    <ul class="nav-links">
+      <li><a href="#features">Caracteristicas</a></li>
+      <li><a href="#bonus">Dulce Ruleta</a></li>
+      <li><a href="#pagos">Pagos</a></li>
+      <li><a href="#como-jugar">Como Jugar</a></li>
+    </ul>
+    <a href="#jugar" class="nav-cta">JUGAR AHORA</a>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg">
+      <img src="assets/images/background.png" alt="" class="desktop-bg">
+      <img src="assets/images/background_mobile.png" alt="" class="mobile-bg">
+    </div>
+    <img src="assets/images/title.png" alt="Dulce Fortuna" class="hero-title">
+    <p class="hero-subtitle">DONDE NACEN TUS SUENOS</p>
+    <span class="hero-badge">Un juego de Loteria de Concepcion</span>
+    <a href="#jugar" class="hero-cta">JUGAR AHORA</a>
+    <img src="assets/images/don_galleton.png" alt="Don Galleton" class="hero-mascot">
+    <div class="scroll-indicator"><span></span></div>
+  </section>
+
+  <!-- ========== JACKPOT BAR ========== -->
+  <section class="jackpot-bar" id="jackpots">
+    <h2 class="reveal">ACUMULADOS</h2>
+    <p class="jackpot-note reveal">Premios compartidos entre todos los juegos de la plataforma</p>
+    <div class="jackpots-row reveal">
+      <div class="jackpot-item mini">
+        <div class="jackpot-label">MINI</div>
+        <div class="jackpot-value">$25,000</div>
+      </div>
+      <div class="jackpot-item menor">
+        <div class="jackpot-label">MENOR</div>
+        <div class="jackpot-value">$100,000</div>
+      </div>
+      <div class="jackpot-item mayor">
+        <div class="jackpot-label">MAYOR</div>
+        <div class="jackpot-value">$500,000</div>
+      </div>
+      <div class="jackpot-item mega">
+        <div class="jackpot-label">MEGA</div>
+        <div class="jackpot-value">$2,000,000</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURES ========== -->
+  <section class="features" id="features">
+    <h2 class="section-title reveal">Simbolos Especiales</h2>
+    <div class="section-divider reveal"></div>
+    <p class="section-subtitle reveal">Tres simbolos clave que desbloquean las mecanicas mas emocionantes del juego.</p>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <img src="assets/images/symbols/candy_wild.webp" alt="Wild" class="feature-icon">
+        <h3>Simbolo Wild</h3>
+        <p>La bolsa magica de dulces sustituye cualquier simbolo regular para completar combinaciones ganadoras. No sustituye al Scatter.</p>
+      </div>
+      <div class="feature-card reveal">
+        <img src="assets/images/symbols/candy_scatter.webp" alt="Scatter" class="feature-icon">
+        <h3>Scatter Real</h3>
+        <p>Consigue 3 Scatters coronados en un mismo giro y desbloquea 5 Juegos Gratis con multiplicadores especiales de hasta x3.</p>
+      </div>
+      <div class="feature-card reveal">
+        <img src="assets/images/symbols/candy_P1.webp" alt="Premium" class="feature-icon">
+        <h3>Cofre Premium</h3>
+        <p>El simbolo de mayor valor. Alinea 10 cofres en la grilla y obtendras un multiplicador de hasta 250x tu apuesta.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SYMBOLS MARQUEE ========== -->
+  <section class="symbols">
+    <div class="symbols-track" aria-hidden="true">
+      <img src="assets/images/symbols/candy_C1.webp" alt="Dulce"><img src="assets/images/symbols/candy_C2.webp" alt="Dulce">
+      <img src="assets/images/symbols/candy_C3.webp" alt="Dulce"><img src="assets/images/symbols/candy_C4.webp" alt="Dulce">
+      <img src="assets/images/symbols/candy_C5.webp" alt="Dulce"><img src="assets/images/symbols/candy_M1.webp" alt="Dulce">
+      <img src="assets/images/symbols/candy_M2.webp" alt="Dulce"><img src="assets/images/symbols/candy_M3.webp" alt="Dulce">
+      <img src="assets/images/symbols/candy_M4.webp" alt="Dulce"><img src="assets/images/symbols/candy_P1.webp" alt="Premium">
+      <img src="assets/images/symbols/candy_wild.webp" alt="Wild"><img src="assets/images/symbols/candy_scatter.webp" alt="Scatter">
+      <img src="assets/images/symbols/candy_C1.webp" alt="Dulce"><img src="assets/images/symbols/candy_C2.webp" alt="Dulce">
+      <img src="assets/images/symbols/candy_C3.webp" alt="Dulce"><img src="assets/images/symbols/candy_C4.webp" alt="Dulce">
+      <img src="assets/images/symbols/candy_C5.webp" alt="Dulce"><img src="assets/images/symbols/candy_M1.webp" alt="Dulce">
+      <img src="assets/images/symbols/candy_M2.webp" alt="Dulce"><img src="assets/images/symbols/candy_M3.webp" alt="Dulce">
+      <img src="assets/images/symbols/candy_M4.webp" alt="Dulce"><img src="assets/images/symbols/candy_P1.webp" alt="Premium">
+      <img src="assets/images/symbols/candy_wild.webp" alt="Wild"><img src="assets/images/symbols/candy_scatter.webp" alt="Scatter">
+    </div>
+  </section>
+
+  <!-- ========== FREE SPINS ========== -->
+  <section class="free-spins" id="free-spins">
+    <h2 class="section-title reveal">Juegos Gratis</h2>
+    <div class="section-divider reveal"></div>
+    <p class="section-subtitle reveal">Activa la bonificacion y disfruta de 5 tiradas automaticas con una experiencia visual unica.</p>
+
+    <div class="free-spins-content">
+      <div class="free-spins-visual reveal">
+        <img src="assets/images/bonus.png" alt="Bonus Free Spins">
+        <div class="fs-badge">x3</div>
+      </div>
+      <div class="free-spins-info reveal">
+        <h2>5 Giros Gratis</h2>
+        <p>Cuando 3 simbolos Scatter aparecen en la grilla, se activan 5 tiradas gratis automaticas con la misma apuesta del giro que las activo. Una cortina de dulces anuncia el inicio del modo bonificacion.</p>
+        <ul class="fs-features">
+          <li>3 Scatters activan la bonificacion</li>
+          <li>5 tiradas gratis automaticas</li>
+          <li>Multiplicadores x1, x2 y x3 en columna extra</li>
+          <li>Misma apuesta que el giro activador</li>
+          <li>Sonido ascendente al revelar cada Scatter</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DULCE RULETA / BONUS ========== -->
+  <section class="bonus" id="bonus">
+    <h2 class="section-title reveal">Dulce Ruleta</h2>
+    <div class="section-divider reveal"></div>
+    <p class="section-subtitle reveal">La rueda dorada aparece en el 1% de las jugadas con premios que incluyen los 4 acumulados.</p>
+
+    <div class="bonus-content">
+      <div class="ruleta-container reveal">
+        <div class="ruleta-bg">
+          <img src="assets/images/ruleta_fondo.webp" alt="Ruleta">
+        </div>
+        <div class="ruleta-frame">
+          <img src="assets/images/ruleta_frente.webp" alt="Marco Ruleta">
+        </div>
+      </div>
+      <div class="bonus-text reveal">
+        <h2>Rueda de Bonos</h2>
+        <p>En aproximadamente el 1% de las jugadas, la Dulce Ruleta aparece con premios fijos y los 4 acumulados: Mini, Menor, Mayor y Mega. Las secciones de acumulados son mas pequenas para cuidar la equidad visual.</p>
+        <p>La fisica de la ruleta esta disenada para que no caiga siempre al centro de cada seccion, transmitiendo una experiencia de giro realista y emocionante.</p>
+        <span class="bonus-highlight">El resultado se determina en el servidor antes de la animacion</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PAYTABLE ========== -->
+  <section class="paytable" id="pagos">
+    <h2 class="section-title reveal">Tabla de Pagos</h2>
+    <div class="section-divider reveal"></div>
+    <p class="section-subtitle reveal">10 simbolos en 3 categorias. Consigue 5 o mas iguales en la grilla 4x5 para ganar. K = cantidad de simbolos iguales.</p>
+
+    <div class="paytable-grid">
+      <!-- Tier 3 - Comunes -->
+      <div class="pay-tier tier-common reveal">
+        <h3>Tier 3 - Comunes</h3>
+        <p class="tier-desc">5 simbolos / Mayor frecuencia</p>
+        <div class="tier-symbols">
+          <img src="assets/images/symbols/candy_C1.webp" alt="C1">
+          <img src="assets/images/symbols/candy_C2.webp" alt="C2">
+          <img src="assets/images/symbols/candy_C3.webp" alt="C3">
+          <img src="assets/images/symbols/candy_C4.webp" alt="C4">
+          <img src="assets/images/symbols/candy_C5.webp" alt="C5">
+        </div>
+        <table class="pay-table">
+          <tr><th>K</th><th>Multiplicador</th></tr>
+          <tr><td>5</td><td>0.25x</td></tr>
+          <tr><td>6</td><td>0.50x</td></tr>
+          <tr><td>7</td><td>0.75x</td></tr>
+          <tr><td>8</td><td>1.25x</td></tr>
+          <tr><td>9</td><td>2.00x</td></tr>
+          <tr><td>10</td><td>3.00x</td></tr>
+        </table>
+      </div>
+
+      <!-- Tier 2 - Medios -->
+      <div class="pay-tier tier-medium reveal">
+        <h3>Tier 2 - Medios</h3>
+        <p class="tier-desc">4 simbolos / Pago intermedio</p>
+        <div class="tier-symbols">
+          <img src="assets/images/symbols/candy_M1.webp" alt="M1">
+          <img src="assets/images/symbols/candy_M2.webp" alt="M2">
+          <img src="assets/images/symbols/candy_M3.webp" alt="M3">
+          <img src="assets/images/symbols/candy_M4.webp" alt="M4">
+        </div>
+        <table class="pay-table">
+          <tr><th>K</th><th>Multiplicador</th></tr>
+          <tr><td>5</td><td>0.50x</td></tr>
+          <tr><td>6</td><td>0.75x</td></tr>
+          <tr><td>7</td><td>1.25x</td></tr>
+          <tr><td>8</td><td>2.00x</td></tr>
+          <tr><td>9</td><td>3.50x</td></tr>
+          <tr><td>10</td><td>6.00x</td></tr>
+        </table>
+      </div>
+
+      <!-- Tier 1 - Premium -->
+      <div class="pay-tier tier-premium reveal">
+        <h3>Tier 1 - Premium</h3>
+        <p class="tier-desc">1 simbolo / Pago maximo</p>
+        <div class="tier-symbols">
+          <img src="assets/images/symbols/candy_P1.webp" alt="P1">
+        </div>
+        <table class="pay-table">
+          <tr><th>K</th><th>Multiplicador</th></tr>
+          <tr><td>5</td><td>1.25x</td></tr>
+          <tr><td>6</td><td>2.50x</td></tr>
+          <tr><td>7</td><td>5.00x</td></tr>
+          <tr><td>8</td><td>10.00x</td></tr>
+          <tr><td>9</td><td>25.00x</td></tr>
+          <tr><td>10</td><td>250.00x</td></tr>
+        </table>
+      </div>
+    </div>
+    <p class="pay-note reveal">Scatter pay: los simbolos cuentan en cualquier posicion de la grilla 4x5. No hay lineas de pago.</p>
+  </section>
+
+  <!-- ========== HOW TO PLAY ========== -->
+  <section class="how-to-play" id="como-jugar">
+    <h2 class="section-title reveal">Como Jugar</h2>
+    <div class="section-divider reveal"></div>
+    <p class="section-subtitle reveal">Mecanica simple y emocionante. Sin lineas de pago complicadas.</p>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-number">1</div>
+        <h3>Elige tu Apuesta</h3>
+        <p>Selecciona desde $100 hasta $10,000 CLP entre 7 niveles de apuesta disponibles.</p>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">2</div>
+        <h3>Gira la Grilla</h3>
+        <p>Presiona el boton de giro o la barra espaciadora en escritorio. Los dulces llenan la grilla de 4x5.</p>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">3</div>
+        <h3>Gana por Conteo</h3>
+        <p>Consigue 5 o mas simbolos iguales en cualquier posicion de la grilla. Mas simbolos = mayor multiplicador.</p>
+      </div>
+    </div>
+
+    <div class="bet-levels reveal">
+      <span class="bet-chip">$100</span>
+      <span class="bet-chip">$200</span>
+      <span class="bet-chip">$300</span>
+      <span class="bet-chip">$500</span>
+      <span class="bet-chip">$1,000</span>
+      <span class="bet-chip">$5,000</span>
+      <span class="bet-chip">$10,000</span>
+    </div>
+  </section>
+
+  <!-- ========== WIN TIERS ========== -->
+  <section class="win-tiers" id="premios">
+    <h2 class="section-title reveal">Niveles de Premio</h2>
+    <div class="section-divider reveal"></div>
+    <p class="section-subtitle reveal">Cada nivel tiene su propia experiencia visual. Los premios grandes incluyen pantalla de celebracion con boton "Continuar" para que puedas hacer screenshot.</p>
+
+    <div class="win-tiers-grid">
+      <div class="win-tier-card small-tier reveal">
+        <div class="tier-name">Small</div>
+        <div class="tier-range">Hasta 2x</div>
+        <div class="tier-detail">Premio discreto. El monto se muestra directamente en la grilla sin animacion especial.</div>
+      </div>
+      <div class="win-tier-card grande-tier reveal">
+        <div class="tier-name">Grande</div>
+        <div class="tier-range">2x - 10x</div>
+        <div class="tier-detail">Pantalla de celebracion nivel 1 con efectos visuales y boton "Continuar".</div>
+      </div>
+      <div class="win-tier-card gigante-tier reveal">
+        <div class="tier-name">Gigante</div>
+        <div class="tier-range">10x - 50x</div>
+        <div class="tier-detail">Animacion mayor con efectos de particulas y celebracion extendida.</div>
+      </div>
+      <div class="win-tier-card sensacional-tier reveal">
+        <div class="tier-name">Sensacional</div>
+        <div class="tier-range">50x+</div>
+        <div class="tier-detail">La experiencia maxima. Pantalla especial con la celebracion mas espectacular del juego.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TRUST / TRANSPARENCY ========== -->
+  <section class="trust" id="transparencia">
+    <h2 class="section-title reveal">Transparencia y Confianza</h2>
+    <div class="section-divider reveal"></div>
+    <p class="section-subtitle reveal">Dulce Fortuna esta disenado bajo estandares de juego justo verificable.</p>
+
+    <div class="trust-grid">
+      <div class="trust-item reveal">
+        <span class="trust-icon" aria-hidden="true">&#x1f6e1;</span>
+        <h4>Provably Fair</h4>
+        <p>Esquema de verificacion que permite a los jugadores comprobar la equidad de cada jugada.</p>
+      </div>
+      <div class="trust-item reveal">
+        <span class="trust-icon" aria-hidden="true">&#x1f4ca;</span>
+        <h4>RTP 70%</h4>
+        <p>Retorno al jugador documentado y auditable: 67% juego base + 3% acumulados.</p>
+      </div>
+      <div class="trust-item reveal">
+        <span class="trust-icon" aria-hidden="true">&#x1f512;</span>
+        <h4>Servidor Calcula</h4>
+        <p>El frontend nunca calcula premios. Cada resultado viene determinado por el servidor con ID unico.</p>
+      </div>
+      <div class="trust-item reveal">
+        <span class="trust-icon" aria-hidden="true">&#x1f3e6;</span>
+        <h4>Loteria de Concepcion</h4>
+        <p>Respaldado por una institucion con trayectoria y compromiso con el juego responsable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA FINAL ========== -->
+  <section class="cta-section" id="jugar">
+    <img src="assets/images/don_galleton_trono.png" alt="Don Galleton en su trono" class="cta-mascot reveal">
+    <h2 class="reveal">Tu Dulce Fortuna Te Espera</h2>
+    <p class="reveal">Don Galleton te invita a su reino de dulces. Cada giro es una nueva oportunidad de ganar hasta $2,000,000 en acumulados.</p>
+    <a href="#" class="cta-btn reveal">JUGAR AHORA</a>
+  </section>
+
+  <!-- ========== RESPONSIBLE GAMING ========== -->
+  <div class="responsible-gaming">
+    <div class="rg-badge">
+      <strong>18+</strong>
+      <span>Solo para mayores de edad</span>
+    </div>
+    <p class="rg-text">Juega con responsabilidad. Establece limites de tiempo y presupuesto. Dulce Fortuna adhiere a los principios de Juego Responsable promovidos por la WLA (World Lottery Association).</p>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <img src="assets/images/title.png" alt="Dulce Fortuna" class="footer-logo">
+    <p class="footer-tagline">Donde nacen tus suenos</p>
+    <ul class="footer-links">
+      <li><a href="#">Terminos y Condiciones</a></li>
+      <li><a href="#">Politica de Privacidad</a></li>
+      <li><a href="#">Juego Responsable</a></li>
+      <li><a href="#">Contacto</a></li>
+    </ul>
+    <p class="footer-institution">Un producto de <strong>Loteria de Concepcion</strong> &mdash; loteria.cl</p>
+    <img src="assets/images/monedas.png" alt="Loteria 2026" class="footer-coins">
+    <p class="footer-copy">&copy; 2026 Dulce Fortuna &mdash; Loteria de Concepcion. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 80);
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Simulate jackpot counter animation
+    document.querySelectorAll('.jackpot-value').forEach(el => {
+      const text = el.textContent;
+      const num = parseInt(text.replace(/[^0-9]/g, ''));
+      let current = Math.floor(num * 0.95);
+      const target = num;
+      const step = Math.ceil((target - current) / 40);
+      const interval = setInterval(() => {
+        current += step;
+        if (current >= target) { current = target; clearInterval(interval); }
+        el.textContent = '$' + current.toLocaleString();
+      }, 50);
+    });
+  </script>
+
+</body>
+</html>
