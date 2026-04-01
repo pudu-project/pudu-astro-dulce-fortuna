@@ -103,11 +103,49 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; padding: 6rem 2rem 4rem; overflow: hidden;
     }
-    .hero-bg { position: absolute; inset: 0; z-index: -1; }
-    .hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; filter: blur(2px) saturate(1.3); }
+    .hero-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+    /* regla general solo para mobile-bg (no parallax) */
+    .hero-bg img.mobile-bg { display: none; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; filter: blur(2px) saturate(1.3); }
     .hero-bg::after {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(180deg, rgba(4,2,24,0.3) 0%, rgba(4,2,24,0.1) 40%, rgba(4,2,24,0.6) 80%, rgba(4,2,24,1) 100%);
+    }
+    /* parallax layers — el orden del DOM define la profundidad (cielo 1ro, paisaje último) */
+    .parallax-layer {
+      position: absolute;
+      will-change: transform;
+      filter: saturate(1.3);
+    }
+    /* cielo: fondo completo — sin will-change para que quede siempre atrás */
+    .parallax-layer.cielo {
+      inset: 0; width: 110%; height: 110%; left: -5%;
+      object-fit: cover; opacity: 0.55; top: 0;
+      will-change: auto;
+    }
+    /* nubes: tamaño según profundidad (más pequeñas = más lejos) */
+    .parallax-layer.n1 {
+      width: 18%; height: auto; opacity: 0.40;
+      top: 10%; left: 4%;
+    }
+    .parallax-layer.n2 {
+      width: 22%; height: auto; opacity: 0.42;
+      top: 6%; right: 6%;
+    }
+    .parallax-layer.n3 {
+      width: 30%; height: auto; opacity: 0.48;
+      top: 3%; left: 28%;
+    }
+    .parallax-layer.n4 {
+      width: 38%; height: auto; opacity: 0.52;
+      top: 8%; right: 14%;
+    }
+    /* paisaje: frente completo con fade superior para eliminar el corte */
+    .parallax-layer.paisaje {
+      bottom: 0; left: -5%; width: 110%; height: 75%;
+      object-fit: cover; object-position: top;
+      opacity: 0.60;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 18%);
     }
 
     .hero-title {
@@ -553,7 +591,7 @@
       font-family: system-ui, sans-serif; font-weight: 400;
       font-size: 0.85rem; color: rgba(255,255,255,0.35); margin-bottom: 0.5rem;
     }
-    .footer-coins { width: 180px; margin-top: 1rem; opacity: 0.5; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); }
+    .footer-coins { width: 84px; margin-top: 1rem; opacity: 0.5; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); }
     .footer-copy { color: rgba(255,255,255,0.25); font-family: system-ui, sans-serif; font-size: 0.75rem; margin-top: 1rem; }
 
     /* ===== FLOATING CANDIES ===== */
@@ -619,7 +657,14 @@
   <!-- ========== HERO ========== -->
   <section class="hero" id="inicio">
     <div class="hero-bg">
-      <img src="assets/images/background.png" alt="" class="desktop-bg">
+      <!-- parallax desktop -->
+      <!-- parallax desktop: orden cielo → nubes lejanas → nubes cercanas → paisaje -->
+      <img src="assets/images/background/horizontal/cielo.png"   alt="" class="parallax-layer cielo   desktop-bg" data-speed="0.05" onerror="this.style.display='none'">
+      <img src="assets/images/background/horizontal/n1.png"      alt="" class="parallax-layer n1      desktop-bg" data-speed="0.15" onerror="this.style.display='none'">
+      <img src="assets/images/background/horizontal/n2.png"      alt="" class="parallax-layer n2      desktop-bg" data-speed="0.25" onerror="this.style.display='none'">
+      <img src="assets/images/background/horizontal/n3.png"      alt="" class="parallax-layer n3      desktop-bg" data-speed="0.40" onerror="this.style.display='none'">
+      <img src="assets/images/background/horizontal/n4.png"      alt="" class="parallax-layer n4      desktop-bg" data-speed="0.55" onerror="this.style.display='none'">
+      <img src="assets/images/background/horizontal/paisaje.png" alt="" class="parallax-layer paisaje desktop-bg" data-speed="0.80" onerror="this.style.display='none'">
       <img src="assets/images/background_mobile.png" alt="" class="mobile-bg">
     </div>
     <img src="assets/images/title.png" alt="Dulce Fortuna" class="hero-title">
@@ -942,7 +987,7 @@
       <li><a href="#">Contacto</a></li>
     </ul>
     <p class="footer-institution">Un producto de <strong>Loteria de Concepcion</strong> &mdash; loteria.cl</p>
-    <img src="assets/images/monedas.png" alt="Loteria 2026" class="footer-coins">
+    <img src="assets/images/logo.png" alt="Loteria 2026" class="footer-coins">
     <p class="footer-copy">&copy; 2026 Dulce Fortuna &mdash; Loteria de Concepcion. Todos los derechos reservados.</p>
   </footer>
 
@@ -952,6 +997,31 @@
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.scrollY > 80);
     });
+
+    // Parallax hero — mouse horizontal
+    (function () {
+      const hero = document.querySelector('.hero');
+      const layers = hero.querySelectorAll('.parallax-layer');
+      let targetX = 0, currentX = 0;
+      const MAX = 28; // px máximo de desplazamiento
+
+      hero.addEventListener('mousemove', e => {
+        const cx = hero.offsetWidth / 2;
+        targetX = ((e.clientX - cx) / cx); // -1 a 1
+      });
+
+      hero.addEventListener('mouseleave', () => { targetX = 0; });
+
+      (function loop() {
+        currentX += (targetX - currentX) * 0.07; // lerp suave
+        layers.forEach(layer => {
+          const speed = parseFloat(layer.dataset.speed) || 0;
+          const dx = currentX * MAX * speed;
+          layer.style.transform = `translateX(${dx}px)`;
+        });
+        requestAnimationFrame(loop);
+      })();
+    })();
 
     // Scroll reveal
     const reveals = document.querySelectorAll('.reveal');
